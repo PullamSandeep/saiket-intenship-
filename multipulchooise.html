@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz App</title>
+  
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h2 id="question">Question here</h2>
+
+    <div id="answers">
+      
+    </div>
+
+    <button id="nextBtn">Next</button>
+
+    <p id="error" style="color:red;"></p>
+  </div>
+<style>
+  body {
+  font-family: Arial;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.quiz-container {
+  background: #fff;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px;
+  width: 100%;
+  background: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkblue;
+}
+</style>
+  <script>
+    const quizData = [
+  {
+    question: "What is HTML?",
+    options: ["Programming Language", "Markup Language", "Database", "OS"],
+    correct: 1
+  },
+  {
+    question: "What is CSS used for?",
+    options: ["Structure", "Styling", "Logic", "Database"],
+    correct: 1
+  },
+  {
+    question: "What is JavaScript?",
+    options: ["Styling Language", "Markup Language", "Programming Language", "Browser"],
+    correct: 2
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const errorEl = document.getElementById("error");
+
+function loadQuestion() {
+  errorEl.textContent = "";
+  answersEl.innerHTML = "";
+
+  let q = quizData[currentQuestion];
+  questionEl.textContent = q.question;
+
+  q.options.forEach((option, index) => {
+    let div = document.createElement("div");
+
+    div.innerHTML = `
+      <input type="radio" name="answer" value="${index}">
+      ${option}
+    `;
+
+    answersEl.appendChild(div);
+  });
+}
+
+function getSelected() {
+  let answers = document.getElementsByName("answer");
+  for (let ans of answers) {
+    if (ans.checked) return ans.value;
+  }
+  return null;
+}
+
+nextBtn.addEventListener("click", () => {
+  let selected = getSelected();
+
+  if (selected === null) {
+    errorEl.textContent = "Please select an answer!";
+    return;
+  }
+
+  if (selected == quizData[currentQuestion].correct) {
+    score++;
+  }
+
+  currentQuestion++;
+
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    document.querySelector(".quiz-container").innerHTML = `
+      <h2>Your Score: ${score}/${quizData.length}</h2>
+    `;
+  }
+});
+
+loadQuestion();
+  </script>
+</body>
+</html>

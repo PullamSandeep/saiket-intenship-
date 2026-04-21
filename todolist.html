@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+  
+</head>
+<body>
+
+<div class="container">
+  <h1>To-Do List</h1>
+
+  <div class="input-section">
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add</button>
+  </div>
+
+  <ul id="taskList"></ul>
+</div>
+
+<style>
+  body {
+  font-family: Arial, sans-serif;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDjXWpkL-D4NJonLJOf55AtJVEf7VLWz3JLxudniZJsM4rD0OOlC2mhw&s");
+  margin: 0;
+  background-image: cover;
+  display: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+h1 {
+  text-align: center;
+}
+
+.input-section {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background: #7b2ff7;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #5a1ecf;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+li {
+  background: #f4f4f4;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.actions button {
+  margin-left: 5px;
+  background: #ff4d4d;
+}
+
+.actions button.edit {
+  background: #28a745;
+}
+</style>
+
+<script>
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const taskText = input.value.trim();
+
+  if (taskText === "") return;
+
+  const li = document.createElement("li");
+
+  const span = document.createElement("span");
+  span.textContent = taskText;
+
+  span.onclick = function () {
+    li.classList.toggle("completed");
+  };
+
+  const actions = document.createElement("div");
+  actions.classList.add("actions");
+
+  // Edit Button
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.classList.add("edit");
+  editBtn.onclick = function () {
+    const newTask = prompt("Edit task:", span.textContent);
+    if (newTask !== null && newTask.trim() !== "") {
+      span.textContent = newTask;
+    }
+  };
+
+  // Delete Button
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.onclick = function () {
+    li.remove();
+  };
+
+  actions.appendChild(editBtn);
+  actions.appendChild(deleteBtn);
+
+  li.appendChild(span);
+  li.appendChild(actions);
+
+  document.getElementById("taskList").appendChild(li);
+
+  input.value = "";
+}
+</script>
+
+
+</body>
+</html>
+
